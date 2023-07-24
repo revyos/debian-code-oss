@@ -1,0 +1,7 @@
+d-postinstall-no-git.patch
+d-match-system-electron-version.patch
+d-product-json.patch
+d-patch-resources.patch
+d-enable-riscv64-build.patch
+d-cli-path.patch
+d-pass-arch-through-envvar.patch

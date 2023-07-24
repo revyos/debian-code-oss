@@ -1,0 +1,10 @@
+--- a/build/gulpfile.vscode.js
++++ b/build/gulpfile.vscode.js
+@@ -432,6 +432,7 @@
+ 	{ platform: 'linux', arch: 'x64' },
+ 	{ platform: 'linux', arch: 'armhf' },
+ 	{ platform: 'linux', arch: 'arm64' },
++	{ platform: 'linux', arch: 'riscv64' },
+ ];
+ BUILD_TARGETS.forEach(buildTarget => {
+ 	const dashed = (str) => (str ? `-${str}` : ``);

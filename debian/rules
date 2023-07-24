@@ -1,0 +1,58 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+electron = electron-22
+electron_version = 22.3.16
+
+carch = $(shell dpkg-architecture -q DEB_HOST_GNU_CPU)
+debarch = $(shell dpkg-architecture -q DEB_HOST_ARCH)
+ifeq ($(debarch),i386)
+	vscode_arch = ia32
+else ifeq ($(debarch),amd64)
+	vscode_arch = x64
+else ifeq ($(debarch),armhf)
+	vscode_arch = arm
+else ifeq ($(debarch),arm64)
+	vscode_arch = arm64
+else ifeq ($(debarch),riscv64)
+	vscode_arch = riscv64
+endif
+
+hash = $(shell echo -n "https://github.com/electron/electron/releases/download/v$(electron_version)" | sha256sum | cut -c 1-64)
+electron_zip = electron-v$(electron_version)-linux-$(carch).zip
+cache_dir = $(shell mktemp -d)/electron/$(hash)
+export electron_config_cache = $(cache_dir)
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+		yarnpkg install
+
+	# The build process wants a zipped electron, let's construct one from system electron and put it in cache.
+	( cd "/usr/lib/$(electron)" && zip -r "/tmp/$(electron_zip)" ./ )
+	mkdir -p "$(cache_dir)"
+	mv "/tmp/$(electron_zip)" "$(cache_dir)"
+
+	# Native node extensions caused segfault or strange behaviors. 
+  # Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
+  # TODO: needs further investigation
+	debian/scripts/rebuild-native-node-extensions.sh $(electron_version) $(carch)
+
+	# HACK: alias yarn=yarnpkg
+	_tempdir=$$(mktemp -d); \
+	ln -s /usr/bin/yarnpkg $$_tempdir/yarn; \
+	export PATH="$$PATH:$$_tempdir"; \
+	gulp --max_old_space_size=8192 \
+       --openssl-legacy-provider \
+       vscode-linux-$(vscode_arch)-min
+
+	mv ../VSCode-linux-$(vscode_arch) VSCode-linux
+
+override_dh_auto_clean:
+	rm -rf VSCode-linux node_modules out-build out-vscode out-vscode-min .cache
