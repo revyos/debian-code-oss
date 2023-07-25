@@ -1,7 +1,7 @@
-VSCode-linux/resources/app/* usr/lib/vscode
+VSCode-linux/resources/app/* usr/lib/code
 
 debian/code usr/bin
-debian/code.js usr/lib/vscode/code.js
+debian/code.js usr/lib/code
 
 resources/linux/code.appdata.xml usr/share/metainfo
 resources/linux/code.desktop usr/share/applications

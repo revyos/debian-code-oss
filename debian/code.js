@@ -1,6 +1,6 @@
 #!/usr/bin/electron-22
 
-const name = 'code-oss';
+const name = 'code';
 
 const app = require('electron').app;
 const path = require('path');
@@ -15,7 +15,7 @@ fs.closeSync(fd);
 process.argv.splice(0, 1);
 
 // Set application paths.
-const appPath = __dirname;
+const appPath = '/usr/lib/code';
 const packageJson = require(path.join(appPath, 'package.json'));
 app.setAppPath(appPath);
 app.setDesktopName(name + '.desktop');

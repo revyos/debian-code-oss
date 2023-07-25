@@ -1,5 +1,5 @@
-Source: vscode
-Section: unknown
+Source: code-oss
+Section: editors
 Priority: optional
 Maintainer: Eric Long <i@hack3r.moe>
 Build-Depends:
@@ -20,7 +20,7 @@ Rules-Requires-Root: no
 Vcs-Git: https://github.com/hack3ric/debian-code.git
 Vcs-Browser: https://github.com/hack3ric/debian-code
 
-Package: vscode
+Package: code-oss
 Architecture: any
 Multi-Arch: foreign
 Depends:
@@ -28,4 +28,6 @@ Depends:
  ${shlibs:Depends},
  electron-22 (>= 22.3.16),
  electron-22 (<< 22.3.17),
+Provides: code
+Conflicts: code
 Description: The Open Source build of Visual Studio Code (vscode) editor
