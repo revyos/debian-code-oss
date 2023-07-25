@@ -54,12 +54,12 @@ override_dh_auto_build:
 	mkdir -p "$(cache_dir)"
 	( cd "/usr/lib/$(electron)" && zip -r "$(cache_dir)/$(electron_zip)" ./ )
 
-# ifeq ($(vscode_arch),riscv64)
+ifeq ($(vscode_arch),riscv64)
 	# Native node extensions caused segfault or strange behaviors.
-  # Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
-  # TODO: needs further investigation
+	# Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
+	# TODO: needs further investigation
 	debian/scripts/rebuild-native-node-extensions.sh $(electron_version) $(carch)
-# endif
+endif
 
 	# HACK: alias yarn=yarnpkg
 	_tempdir=$$(mktemp -d); \
