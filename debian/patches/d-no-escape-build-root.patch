@@ -1,0 +1,18 @@
+Description: Prevent Gulp from putting artifacts outside of build directory
+
+ ```
+ [19:53:53] 'vscode-linux-x64-min' errored after 17 min
+ [19:53:53] Error: EACCES: permission denied, mkdir '/sbuild-nonexistent'
+ ```
+
+--- a/build/gulpfile.vscode.js
++++ b/build/gulpfile.vscode.js
+@@ -21,7 +21,7 @@
+ const task = require('./lib/task');
+ const buildfile = require('../src/buildfile');
+ const optimize = require('./lib/optimize');
+-const root = path.dirname(__dirname);
++const root = __dirname;
+ const commit = getVersion(root);
+ const packageJson = require('../package.json');
+ const product = require('../product.json');

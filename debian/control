@@ -26,5 +26,6 @@ Multi-Arch: foreign
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
- electron-22 (= 22.3.16),
+ electron-22 (>= 22.3.16),
+ electron-22 (<< 22.3.17),
 Description: The Open Source build of Visual Studio Code (vscode) editor

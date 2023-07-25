@@ -22,22 +22,27 @@ else ifeq ($(debarch),riscv64)
 	vscode_arch = riscv64
 endif
 
+random := $(shell head /dev/urandom | md5sum | cut -c 1-32)
+fake_home = /tmp/vscode-home-$(random)
+export HOME = $(fake_home)
+
 hash = $(shell echo -n "https://github.com/electron/electron/releases/download/v$(electron_version)" | sha256sum | cut -c 1-64)
 electron_zip = electron-v$(electron_version)-linux-$(carch).zip
-cache_dir = $(shell mktemp -d)/electron/$(hash)
-export electron_config_cache = $(cache_dir)
+cache_dir = $(fake_home)/.cache/electron/$(hash)
 
 %:
 	dh $@
+
+override_dh_auto_configure:
+	mkdir -p $(fake_home)
 
 override_dh_auto_build:
 	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
 		yarnpkg install
 
 	# The build process wants a zipped electron, let's construct one from system electron and put it in cache.
-	( cd "/usr/lib/$(electron)" && zip -r "/tmp/$(electron_zip)" ./ )
 	mkdir -p "$(cache_dir)"
-	mv "/tmp/$(electron_zip)" "$(cache_dir)"
+	( cd "/usr/lib/$(electron)" && zip -r "$(cache_dir)/$(electron_zip)" ./ )
 
 	# Native node extensions caused segfault or strange behaviors. 
   # Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
@@ -52,7 +57,11 @@ override_dh_auto_build:
        --openssl-legacy-provider \
        vscode-linux-$(vscode_arch)-min
 
-	mv ../VSCode-linux-$(vscode_arch) VSCode-linux
+override_dh_auto_install:
+	mv VSCode-linux-$(vscode_arch) VSCode-linux
+	dh_auto_install $@
 
 override_dh_auto_clean:
-	rm -rf VSCode-linux node_modules out-build out-vscode out-vscode-min .cache
+	rm -rf VSCode-linux out-build out-vscode out-vscode-min .build $(fake_home)
+	find . -name node_modules -type d -print0 | xargs -0 rm -rf
+	rm -f build/.yarnrc
