@@ -29,6 +29,7 @@ Depends:
  ${shlibs:Depends},
  electron-22 (>= 22.3.16),
  electron-22 (<< 22.3.17),
+ ripgrep,
 Provides: code
 Conflicts: code
 Description: The Open Source build of Visual Studio Code (vscode) editor
