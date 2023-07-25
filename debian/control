@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Eric Long <i@hack3r.moe>
 Build-Depends:
  debhelper-compat (= 13),
- nodejs,
+ nodejs (>= 16),
+ nodejs (<< 17)
  electron-22 (>= 22.3.16),
  electron-22 (<< 22.3.17),
  npm,
