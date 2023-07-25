@@ -24,19 +24,29 @@ endif
 
 random := $(shell head /dev/urandom | md5sum | cut -c 1-32)
 fake_home = /tmp/vscode-home-$(random)
-export HOME = $(fake_home)
 
 hash = $(shell echo -n "https://github.com/electron/electron/releases/download/v$(electron_version)" | sha256sum | cut -c 1-64)
 electron_zip = electron-v$(electron_version)-linux-$(carch).zip
 cache_dir = $(fake_home)/.cache/electron/$(hash)
 
+node_gyp_path = $(fake_home)/node-gyp
+
 %:
 	dh $@
 
-override_dh_auto_configure:
+override_dh_auto_build: export HOME = $(fake_home)
+override_dh_auto_build: export PATH := $(node_gyp_path):$(PATH)
+override_dh_auto_build:
 	mkdir -p $(fake_home)
 
-override_dh_auto_build:
+	# HACK: Debian's node-gyp automatically links to libnode, which is not
+	# desired for Electron
+	cp -r /usr/share/nodejs/node-gyp $(node_gyp_path)
+	old_pwd=$$PWD; \
+	cd $(node_gyp_path); \
+	patch -Rp1 -i $$old_pwd/debian/patches/REVERT-link-libnode.patch; \
+	ln -s bin/node-gyp.js node-gyp;
+
 	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
 		yarnpkg install
 
@@ -44,10 +54,12 @@ override_dh_auto_build:
 	mkdir -p "$(cache_dir)"
 	( cd "/usr/lib/$(electron)" && zip -r "$(cache_dir)/$(electron_zip)" ./ )
 
-	# Native node extensions caused segfault or strange behaviors. 
+# ifeq ($(vscode_arch),riscv64)
+	# Native node extensions caused segfault or strange behaviors.
   # Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
   # TODO: needs further investigation
 	debian/scripts/rebuild-native-node-extensions.sh $(electron_version) $(carch)
+# endif
 
 	# HACK: alias yarn=yarnpkg
 	_tempdir=$$(mktemp -d); \

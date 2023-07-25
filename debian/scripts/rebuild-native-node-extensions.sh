@@ -5,7 +5,7 @@ _arch=$2
 
 for _module in @vscode/spdlog @parcel/watcher keytar native-is-elevated native-keymap native-watchdog node-pty windows-foreground-love; do
   pushd node_modules/$_module
-  node-gyp rebuild --target=$_electron_ver --arch=$_arch --dist-url=https://electronjs.org/headers --debug
+  HOME=$HOME/.electron-gyp node-gyp rebuild --target=$_electron_ver --arch=$_arch --dist-url=https://electronjs.org/headers --debug --silly
   mkdir build/Release
   cp build/Debug/*.node build/Release
   rm -rf build/Debug
