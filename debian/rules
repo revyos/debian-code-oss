@@ -58,7 +58,7 @@ ifeq ($(vscode_arch),riscv64)
 	# Native node extensions caused segfault or strange behaviors.
 	# Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
 	# TODO: needs further investigation
-	_NODE_GYP_FLAGS=--debug debian/scripts/rebuild-native-node-extensions.sh \
+	_NODE_GYP_DEBUG=1 debian/scripts/rebuild-native-node-extensions.sh \
 		$(electron_version) $(carch) \
 		@vscode/spdlog @parcel/watcher keytar native-is-elevated native-keymap \
 		native-watchdog node-pty windows-foreground-love

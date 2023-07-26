@@ -4,7 +4,7 @@ _electron_ver=$1
 _arch=$2
 shift 2
 
-if [ $_NODE_GYP_DEBUG -eq 1 ]; then
+if [ ! -z $_NODE_GYP_DEBUG ]; then
   _debug=--debug
 fi
 
@@ -15,7 +15,7 @@ for _module in $@; do
     --arch=$_arch \
     --dist-url=https://electronjs.org/headers \
     --silly
-  if [ $_NODE_GYP_DEBUG -eq 1 ]; then
+  if [ ! -z $_NODE_GYP_DEBUG ]; then
     mkdir build/Release
     cp build/Debug/*.node build/Release
     rm -rf build/Debug
