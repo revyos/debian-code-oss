@@ -58,7 +58,13 @@ ifeq ($(vscode_arch),riscv64)
 	# Native node extensions caused segfault or strange behaviors.
 	# Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
 	# TODO: needs further investigation
-	debian/scripts/rebuild-native-node-extensions.sh $(electron_version) $(carch)
+	_NODE_GYP_FLAGS=--debug debian/scripts/rebuild-native-node-extensions.sh \
+		$(electron_version) $(carch) \
+		@vscode/spdlog @parcel/watcher keytar native-is-elevated native-keymap \
+		native-watchdog node-pty windows-foreground-love
+else
+	# keytar somehow still links to libnode after patching node-gyp. Rebuilding.
+	debian/scripts/rebuild-native-node-extensions.sh $(electron_version) $(carch) keytar
 endif
 
 	# HACK: alias yarn=yarnpkg
