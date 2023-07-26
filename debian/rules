@@ -42,6 +42,7 @@ override_dh_auto_build:
 	# HACK: Debian's node-gyp automatically links to libnode, which is not
 	# desired for Electron
 	cp -r /usr/share/nodejs/node-gyp $(node_gyp_path)
+	ln -sf /usr/bin/gyp $(node_gyp_path)/gyp/gyp_main.py
 	old_pwd=$$PWD; \
 	cd $(node_gyp_path); \
 	patch -Rp1 -i $$old_pwd/debian/patches/REVERT-link-libnode.patch; \
