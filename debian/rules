@@ -72,8 +72,8 @@ endif
 	ln -s /usr/bin/yarnpkg $$_tempdir/yarn; \
 	export PATH="$$PATH:$$_tempdir"; \
 	gulp --max_old_space_size=8192 \
-       --openssl-legacy-provider \
-       vscode-linux-$(vscode_arch)-min
+		--openssl-legacy-provider \
+		vscode-linux-$(vscode_arch)-min
 
 override_dh_auto_install:
 	mv VSCode-linux-$(vscode_arch) VSCode-linux
