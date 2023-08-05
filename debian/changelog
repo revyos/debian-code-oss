@@ -1,3 +1,9 @@
+code-oss (1.80.1-1+electron23) UNRELEASED; urgency=medium
+
+  * Use Electron 23.3.11 as runtime
+
+ -- Eric Long <i@hack3r.moe>  Sat, 05 Aug 2023 21:00:22 +0800
+
 code-oss (1.80.1-1) sid; urgency=low
 
   * Initial release.

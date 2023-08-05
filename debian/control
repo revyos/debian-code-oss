@@ -5,8 +5,8 @@ Maintainer: Eric Long <i@hack3r.moe>
 Build-Depends:
  debhelper-compat (= 13),
  nodejs (>= 16.17.0),
- electron-22 (>= 22.3.16),
- electron-22 (<< 22.3.17),
+ electron-23 (>= 23.3.11),
+ electron-23 (<< 23.3.12),
  npm,
  yarnpkg,
  gulp,
@@ -26,8 +26,8 @@ Multi-Arch: foreign
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
- electron-22 (>= 22.3.16),
- electron-22 (<< 22.3.17),
+ electron-23 (>= 23.3.11),
+ electron-23 (<< 23.3.12),
  ripgrep,
 Provides: code
 Conflicts: code

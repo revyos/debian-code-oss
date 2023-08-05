@@ -5,8 +5,8 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
-electron = electron-22
-electron_version = 22.3.16
+electron = electron-23
+electron_version = 23.3.11
 
 carch = $(shell dpkg-architecture -q DEB_HOST_GNU_CPU)
 debarch = $(shell dpkg-architecture -q DEB_HOST_ARCH)
