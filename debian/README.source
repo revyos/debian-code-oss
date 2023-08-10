@@ -1,0 +1,5 @@
+Bump version in the following files:
+- debian/
+  - control
+  - rules
+  - patches/d-match-system-electron-version.patch

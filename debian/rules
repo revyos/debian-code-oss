@@ -6,7 +6,7 @@ export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 electron = electron-23
-electron_version = 23.3.11
+electron_ver = 23.3.11
 
 carch = $(shell dpkg-architecture -q DEB_HOST_GNU_CPU)
 debarch = $(shell dpkg-architecture -q DEB_HOST_ARCH)
@@ -25,14 +25,17 @@ endif
 random := $(shell head /dev/urandom | md5sum | cut -c 1-32)
 fake_home = /tmp/vscode-home-$(random)
 
-hash = $(shell echo -n "https://github.com/electron/electron/releases/download/v$(electron_version)" | sha256sum | cut -c 1-64)
-electron_zip = electron-v$(electron_version)-linux-$(carch).zip
+hash = $(shell echo -n "https://github.com/electron/electron/releases/download/v$(electron_ver)" | sha256sum | cut -c 1-64)
+electron_zip = electron-v$(electron_ver)-linux-$(carch).zip
 cache_dir = $(fake_home)/.cache/electron/$(hash)
 
 node_gyp_path = $(fake_home)/node-gyp
 
 %:
 	dh $@
+
+override_dh_auto_configure:
+	sed 's|@@ELECTRON@@|$(electron)|g' debian/code.js.in > debian/code.js
 
 override_dh_auto_build: export HOME = $(fake_home)
 override_dh_auto_build: export PATH := $(node_gyp_path):$(PATH)
@@ -60,12 +63,12 @@ ifeq ($(vscode_arch),riscv64)
 	# Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
 	# TODO: needs further investigation
 	_NODE_GYP_DEBUG=1 debian/scripts/rebuild-native-node-extensions.sh \
-		$(electron_version) $(carch) \
+		$(electron_ver) $(carch) \
 		@vscode/spdlog @parcel/watcher keytar native-is-elevated native-keymap \
 		native-watchdog node-pty windows-foreground-love
 else
 	# keytar somehow still links to libnode after patching node-gyp. Rebuilding.
-	debian/scripts/rebuild-native-node-extensions.sh $(electron_version) $(carch) keytar
+	debian/scripts/rebuild-native-node-extensions.sh $(electron_ver) $(carch) keytar
 endif
 
 	# HACK: alias yarn=yarnpkg
@@ -84,3 +87,4 @@ override_dh_auto_clean:
 	rm -rf VSCode-linux out-build out-vscode out-vscode-min .build $(fake_home)
 	find . -name node_modules -type d -print0 | xargs -0 rm -rf
 	rm -f build/.yarnrc
+	rm -f debian/code.js
