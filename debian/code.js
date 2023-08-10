@@ -1,4 +1,4 @@
-#!/usr/bin/electron-22
+#!/usr/bin/electron-23
 
 const name = 'code';
 
