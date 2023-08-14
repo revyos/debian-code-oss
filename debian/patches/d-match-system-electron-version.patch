@@ -2,8 +2,8 @@
 +++ b/.yarnrc
 @@ -1,5 +1,5 @@
  disturl "https://electronjs.org/headers"
--target "22.3.14"
+-target "22.3.18"
 +target "23.3.11"
- ms_build_id "21893604"
+ ms_build_id "22689846"
  runtime "electron"
  build_from_source "true"

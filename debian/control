@@ -14,6 +14,7 @@ Build-Depends:
  zip,
  libsecret-1-dev,
  libxkbfile-dev,
+ libkrb5-dev,
 Standards-Version: 4.5.1
 Homepage: https://code.visualstudio.com
 Rules-Requires-Root: no
