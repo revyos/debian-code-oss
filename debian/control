@@ -5,10 +5,10 @@ Maintainer: Eric Long <i@hack3r.moe>
 Build-Depends:
  debhelper-compat (= 13),
  nodejs (>= 16.17.0),
- electron-23 (>= 23.3.11),
- electron-23 (<< 23.3.12),
+ electron-27 (>= 27.2.2),
+ electron-27 (<< 27.2.3),
  npm,
- yarnpkg,
+ node-corepack,
  gulp,
  node-gyp,
  zip,
@@ -27,8 +27,8 @@ Multi-Arch: foreign
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
- electron-23 (>= 23.3.11),
- electron-23 (<< 23.3.12),
+ electron-27 (>= 27.2.2),
+ electron-27 (<< 27.2.3),
  ripgrep,
 Provides: code
 Conflicts: code

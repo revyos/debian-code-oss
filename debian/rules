@@ -5,8 +5,8 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
-electron = electron-23
-electron_ver = 23.3.11
+electron = electron-27
+electron_ver = 27.2.2
 
 carch = $(shell dpkg-architecture -q DEB_HOST_GNU_CPU)
 debarch = $(shell dpkg-architecture -q DEB_HOST_ARCH)
@@ -51,8 +51,12 @@ override_dh_auto_build:
 	patch -Rp1 -i $$old_pwd/debian/patches/REVERT-link-libnode.patch; \
 	ln -s bin/node-gyp.js node-gyp;
 
+	# HACK: Use corepack's Yarn 1.x
+	_tempdir=$$(mktemp -d); \
+	ln -s /usr/share/nodejs/corepack/dist/yarn.js $$_tempdir/yarn; \
+	export PATH="$$PATH:$$_tempdir"; \
 	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-		yarnpkg install
+		yarn install
 
 	# The build process wants a zipped electron, let's construct one from system electron and put it in cache.
 	mkdir -p "$(cache_dir)"
@@ -66,14 +70,10 @@ ifeq ($(vscode_arch),riscv64)
 		$(electron_ver) $(carch) \
 		@vscode/spdlog @parcel/watcher keytar native-is-elevated native-keymap \
 		native-watchdog node-pty windows-foreground-love
-else
-	# keytar somehow still links to libnode after patching node-gyp. Rebuilding.
-	debian/scripts/rebuild-native-node-extensions.sh $(electron_ver) $(carch) keytar
 endif
 
-	# HACK: alias yarn=yarnpkg
 	_tempdir=$$(mktemp -d); \
-	ln -s /usr/bin/yarnpkg $$_tempdir/yarn; \
+	ln -s /usr/share/nodejs/corepack/dist/yarn.js $$_tempdir/yarn; \
 	export PATH="$$PATH:$$_tempdir"; \
 	gulp --max_old_space_size=8192 \
 		--openssl-legacy-provider \
@@ -88,3 +88,4 @@ override_dh_auto_clean:
 	find . -name node_modules -type d -print0 | xargs -0 rm -rf
 	rm -f build/.yarnrc
 	rm -f debian/code.js
+	rm -rf .yarn

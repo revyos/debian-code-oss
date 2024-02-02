@@ -6,5 +6,5 @@
      "gulp-untar": "^0.0.7",
 -    "husky": "^0.13.1",
      "innosetup": "6.0.5",
-     "is": "^3.1.0",
      "istanbul-lib-coverage": "^3.2.0",
+     "istanbul-lib-instrument": "^5.2.0",

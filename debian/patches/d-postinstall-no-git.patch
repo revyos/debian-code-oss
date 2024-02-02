@@ -1,9 +1,9 @@
 --- a/build/npm/postinstall.js
 +++ b/build/npm/postinstall.js
-@@ -107,6 +107,3 @@
+@@ -110,6 +110,3 @@
  
  	yarnInstall(dir, opts);
  }
 -
 -cp.execSync('git config pull.rebase merges');
--cp.execSync('git config blame.ignoreRevsFile .git-blame-ignore');
+-cp.execSync('git config blame.ignoreRevsFile .git-blame-ignore-revs');
