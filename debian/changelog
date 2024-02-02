@@ -1,8 +1,8 @@
-code-oss (1.85.2-1) UNRELEASED; urgency=medium
+code-oss (1.86.0-1) UNRELEASED; urgency=medium
 
   * New upstream version
 
- -- Eric Long <i@hack3r.moe>  Thu, 01 Feb 2024 15:06:50 +0800
+ -- Eric Long <i@hack3r.moe>  Fri, 02 Feb 2024 14:21:21 +0800
 
 code-oss (1.81.1-1) unstable; urgency=medium
 
