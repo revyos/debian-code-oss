@@ -1,6 +1,7 @@
-code-oss (1.86.0-1) UNRELEASED; urgency=medium
+code-oss (1.86.0-1revyos1) UNRELEASED; urgency=medium
 
   * New upstream version
+  * Assume Yarn 1.x in repository
 
  -- Eric Long <i@hack3r.moe>  Fri, 02 Feb 2024 14:21:21 +0800
 

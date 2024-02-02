@@ -51,12 +51,8 @@ override_dh_auto_build:
 	patch -Rp1 -i $$old_pwd/debian/patches/REVERT-link-libnode.patch; \
 	ln -s bin/node-gyp.js node-gyp;
 
-	# HACK: Use corepack's Yarn 1.x
-	_tempdir=$$(mktemp -d); \
-	ln -s /usr/share/nodejs/corepack/dist/yarn.js $$_tempdir/yarn; \
-	export PATH="$$PATH:$$_tempdir"; \
 	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-		yarn install
+		yarnpkg install
 
 	# The build process wants a zipped electron, let's construct one from system electron and put it in cache.
 	mkdir -p "$(cache_dir)"
@@ -73,7 +69,7 @@ ifeq ($(vscode_arch),riscv64)
 endif
 
 	_tempdir=$$(mktemp -d); \
-	ln -s /usr/share/nodejs/corepack/dist/yarn.js $$_tempdir/yarn; \
+	ln -s /usr/bin/yarnpkg $$_tempdir/yarn; \
 	export PATH="$$PATH:$$_tempdir"; \
 	gulp --max_old_space_size=8192 \
 		--openssl-legacy-provider \
