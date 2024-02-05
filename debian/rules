@@ -64,8 +64,8 @@ ifeq ($(vscode_arch),riscv64)
 	# TODO: needs further investigation
 	_NODE_GYP_DEBUG=1 debian/scripts/rebuild-native-node-extensions.sh \
 		$(electron_ver) $(carch) \
-		@vscode/spdlog @parcel/watcher keytar native-is-elevated native-keymap \
-		native-watchdog node-pty windows-foreground-love
+		@vscode/spdlog node-pty kerberos native-is-elevated native-keymap \
+		native-watchdog @parcel/watcher @vscode/policy-watcher @vscode/sqlite3 
 endif
 
 	_tempdir=$$(mktemp -d); \
