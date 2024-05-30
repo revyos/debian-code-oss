@@ -5,8 +5,8 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
-electron = electron-27
-electron_ver = 27.2.2
+electron = electron-28
+electron_ver = 28.3.1
 
 carch = $(shell dpkg-architecture -q DEB_HOST_GNU_CPU)
 debarch = $(shell dpkg-architecture -q DEB_HOST_ARCH)
@@ -51,9 +51,8 @@ override_dh_auto_build:
 	patch -Rp1 -i $$old_pwd/debian/patches/REVERT-link-libnode.patch; \
 	ln -s bin/node-gyp.js node-gyp;
 
-	# HACK: Use corepack's Yarn 1.x
 	_tempdir=$$(mktemp -d); \
-	ln -s /usr/share/nodejs/corepack/dist/yarn.js $$_tempdir/yarn; \
+	ln -s /usr/bin/yarnpkg $$_tempdir/yarn; \
 	export PATH="$$PATH:$$_tempdir"; \
 	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
 		yarn install
@@ -62,18 +61,8 @@ override_dh_auto_build:
 	mkdir -p "$(cache_dir)"
 	( cd "/usr/lib/$(electron)" && zip -r "$(cache_dir)/$(electron_zip)" ./ )
 
-ifeq ($(vscode_arch),riscv64)
-	# Native node extensions caused segfault or strange behaviors.
-	# Confirmed for @vscode/spdlog and node-pty. Let's build all native extensions in debug mode just in case.
-	# TODO: needs further investigation
-	_NODE_GYP_DEBUG=1 debian/scripts/rebuild-native-node-extensions.sh \
-		$(electron_ver) $(carch) \
-		@vscode/spdlog node-pty kerberos native-is-elevated native-keymap \
-		native-watchdog @parcel/watcher @vscode/policy-watcher @vscode/sqlite3 
-endif
-
 	_tempdir=$$(mktemp -d); \
-	ln -s /usr/share/nodejs/corepack/dist/yarn.js $$_tempdir/yarn; \
+	ln -s /usr/bin/yarnpkg $$_tempdir/yarn; \
 	export PATH="$$PATH:$$_tempdir"; \
 	gulp --max_old_space_size=8192 \
 		--openssl-legacy-provider \

@@ -41,17 +41,17 @@
 +Name=Code - OSS
  Comment=Code Editing. Redefined.
  GenericName=Text Editor
--Exec=@@EXEC@@ --unity-launch %F
+-Exec=@@EXEC@@ %F
 -Icon=@@ICON@@
-+Exec=/usr/bin/code --unity-launch %F
++Exec=/usr/bin/code %F
 +Icon=com.visualstudio.code.oss
  Type=Application
  StartupNotify=false
 -StartupWMClass=@@NAME_SHORT@@
 +StartupWMClass=Code
  Categories=TextEditor;Development;IDE;
--MimeType=text/plain;inode/directory;application/x-@@NAME@@-workspace;
-+MimeType=text/plain;inode/directory;application/x-code-workspace;
+-MimeType=application/x-@@NAME@@-workspace;
++MimeType=application/x-code-workspace;
  Actions=new-empty-window;
  Keywords=vscode;
  
