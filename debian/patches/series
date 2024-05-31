@@ -8,3 +8,4 @@ d-pass-arch-through-envvar.patch
 d-no-escape-build-root.patch
 d-electron-no-validate-checksum.patch
 d-remove-git-hook.patch
+d-upgrade-tree-sitter.patch
