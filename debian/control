@@ -8,7 +8,7 @@ Build-Depends:
  electron-29 (>= 28.4.2),
  electron-29 (<< 29.4.3),
  npm,
- yarnpkg,
+ node-corepack,
  gulp,
  node-gyp,
  zip,
