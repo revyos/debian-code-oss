@@ -1,8 +1,8 @@
 --- a/build/npm/postinstall.js
 +++ b/build/npm/postinstall.js
-@@ -110,6 +110,3 @@
+@@ -187,6 +187,3 @@
  
- 	yarnInstall(dir, opts);
+ 	npmInstall(dir, opts);
  }
 -
 -cp.execSync('git config pull.rebase merges');
