@@ -51,7 +51,7 @@ override_dh_auto_build:
 	patch -Rp1 -i $$old_pwd/debian/patches/REVERT-link-libnode.patch; \
 	ln -s bin/node-gyp.js node-gyp;
 
-	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+	ARCH=$(vscode_arch) ELECTRON_SKIP_BINARY_DOWNLOAD=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 VSCODE_SKIP_NODE_VERSION_CHECK=1 \
 		npm install
 
 	# The build process wants a zipped electron, let's construct one from system electron and put it in cache.
