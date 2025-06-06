@@ -1,12 +1,12 @@
 --- a/build/lib/electron.js
 +++ b/build/lib/electron.js
-@@ -182,7 +182,7 @@
+@@ -218,7 +218,7 @@
      winIcon: 'resources/win32/code.ico',
      token: process.env['GITHUB_TOKEN'],
      repo: product.electronRepository || undefined,
 -    validateChecksum: true,
 +    validateChecksum: false,
-     checksumFile: path.join(root, 'build', 'checksums', 'electron.txt'),
+     checksumFile: path_1.default.join(root, 'build', 'checksums', 'electron.txt'),
  };
  function getElectron(arch) {
 --- a/build/lib/electron.ts

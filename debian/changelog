@@ -1,4 +1,11 @@
-code-oss (1.90.0-1) UNRELEASED; urgency=medium
+code-oss (1.100.3-1) UNRELEASED; urgency=medium
+
+  * New upstream version
+  * Use npm instead of yarnpkg
+
+ -- Eric Long <i@hack3r.moe>  Fri, 06 Jun 2025 15:50:41 +0800
+
+code-oss (1.90.0-1) unstable; urgency=medium
 
   * New upstream version
 

@@ -7,10 +7,10 @@ Description: Prevent Gulp from putting artifacts outside of build directory
 
 --- a/build/gulpfile.vscode.js
 +++ b/build/gulpfile.vscode.js
-@@ -21,7 +21,7 @@
- const task = require('./lib/task');
- const buildfile = require('../src/buildfile');
+@@ -20,7 +20,7 @@
+ const buildfile = require('./buildfile');
  const optimize = require('./lib/optimize');
+ const { inlineMeta } = require('./lib/inlineMeta');
 -const root = path.dirname(__dirname);
 +const root = __dirname;
  const commit = getVersion(root);

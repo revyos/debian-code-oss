@@ -4,11 +4,9 @@ Priority: optional
 Maintainer: Eric Long <i@hack3r.moe>
 Build-Depends:
  debhelper-compat (= 13),
- nodejs (>= 16.17.0),
- electron-29 (>= 28.4.2),
- electron-29 (<< 29.4.3),
+ nodejs,
+ electron-34,
  npm,
- yarnpkg,
  gulp,
  node-gyp,
  zip,
@@ -27,8 +25,7 @@ Multi-Arch: foreign
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
- electron-29 (>= 28.4.2),
- electron-29 (<< 29.4.3),
+ electron-34,
  ripgrep,
 Provides: code
 Conflicts: code
